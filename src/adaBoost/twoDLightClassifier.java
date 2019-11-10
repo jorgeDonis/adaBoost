@@ -6,9 +6,9 @@ import twoD.Constants;
 
 
 public class twoDLightClassifier extends LightClassifier {
-	private int threshhold;
-	private boolean vertical;
-	private boolean isClassBigger;
+	public int threshhold;
+	public boolean vertical;
+	public boolean isClassBigger;
 	
 	public void init() {
 		if (vertical = rng.nextBoolean())

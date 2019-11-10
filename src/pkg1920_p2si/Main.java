@@ -60,7 +60,7 @@ public class Main {
     	System.out.println("Desea generar los datos 2D? (s/n) :");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 //        if (reader.readLine().equals("s")) {
-        	Generator2D.generateData();
+//        	Generator2D.generateData();
         	System.out.println("Datos generados en " + "\"" + twoD.Constants.generatedDataOutputFile + "\"");
 //        }
         System.out.println("Desea visualizar los datos generados? (s/n) :");

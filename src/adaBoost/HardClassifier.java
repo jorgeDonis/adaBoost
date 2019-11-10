@@ -9,10 +9,10 @@ import twoD.Constants;
 public class HardClassifier {
 
 	// número de clasificadores débiles
-	static final int T = 10;
+	static final int T = 3;
 
 	// iteraciones de aprendizaje para cada clasificador débil
-	static final int A = 10000;
+	static final int A = 10000000;
 
 	// vector de pesos de cada dato
 	private double[] D;
@@ -53,16 +53,38 @@ public class HardClassifier {
 
 	// lista de 'alfas' asociadas a cada clasificador débil
 	private double[] alphas = new double[T];
+	
+	private void debug() {
+		twoDLightClassifier lc = new twoDLightClassifier();
+		lc.vertical = true;
+		lc.isClassBigger = false;
+		lc.threshhold = 2;
+		lightClassifiers[0] = lc;
+		
+		
+		lc = new twoDLightClassifier();
+		lc.vertical = true;
+		lightClassifiers[1] = lc;
+		lc.threshhold = 7;
+		lc.isClassBigger = false;
+		
+		lc = new twoDLightClassifier();
+		lc.vertical = false;
+		lc.isClassBigger = true;
+		lc.threshhold = 4;
+		lightClassifiers[2] = lc;
+		
+	}
 
 	public HardClassifier(DataInput X) {
 		initD(X.getM());
 		lightClassifiers = new LightClassifier[T];
 		for (int t = 0; t < T; t++) {
-			LightClassifier lc = new twoDLightClassifier();
-			lc.train(X, D, A);
+			LightClassifier lc = new twoDLightClassifier3();
 			lightClassifiers[t] = lc;
+			lc.train(X, D, A);
 			double epsilon = lc.getError(X, D);
-			double alpha = 0.5 * log2((double)(1 - epsilon) / epsilon);
+			double alpha = 0.5 * Math.log((double)(1 - epsilon) / epsilon);
 			alphas[t] = alpha;
 			updateD(alpha, lc.predict(X), X);
 		}
