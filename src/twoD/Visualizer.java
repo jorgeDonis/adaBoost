@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 
 public class Visualizer {
 	
-	static final int scalingFactor = 20;
+	static final int scalingFactor = 10;
 	
 	public JFrame frame;
 

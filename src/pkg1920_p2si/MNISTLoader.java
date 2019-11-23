@@ -16,7 +16,7 @@ public class MNISTLoader {
 
     private ArrayList[] mnistImageDB;
     
-    void loadDBFromPath(String path){
+    public void loadDBFromPath(String path){
         
         int imagesCount=0;
         
@@ -41,7 +41,7 @@ public class MNISTLoader {
         
     }
     
-    ArrayList getImageDatabaseForDigit(int digit){
+    public ArrayList getImageDatabaseForDigit(int digit){
         return mnistImageDB[digit];
     }
     

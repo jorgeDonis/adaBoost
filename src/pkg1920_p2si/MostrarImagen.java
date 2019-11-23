@@ -29,11 +29,11 @@ public class MostrarImagen extends JPanel
         image = bimage.getScaledInstance(500,500,Image.SCALE_SMOOTH);
     }
     
-    void setImage(Imagen img){
+    public void setImage(Imagen img){
         image = img.getBufferedImage().getScaledInstance(500,500,Image.SCALE_SMOOTH);
     }
     
-    void mostrar(){
+    public void mostrar(){
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setSize(500,500);

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import adaBoost.DataInput;
 import adaBoost.HardClassifier;
+import mnist_predict.MNISTPredictor;
 import twoD.Constants;
 import twoD.Generator2D;
 import twoD.InputVisualizer;
@@ -24,9 +25,9 @@ import twoD.OutputVisualizer;
 public class Main {
     
     
-    public static int Byte2Unsigned(byte b) {
-        return b & 0xFF;
-    }
+//    public static int Byte2Unsigned(byte b) {
+//        return b & 0xFF;
+//    }
     /**
      * @param args the command line arguments
      * @throws IOException 
@@ -56,25 +57,11 @@ public class Main {
         imgShow.setImage(img);
         imgShow.mostrar();
 		*/
-    	  	
-    	System.out.println("Desea generar los datos 2D? (s/n) :");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-//        if (reader.readLine().equals("s")) {
-        	Generator2D.generateData();
-        	System.out.println("Datos generados en " + "\"" + twoD.Constants.generatedDataOutputFile + "\"");
-//        }
-        System.out.println("Desea visualizar los datos generados? (s/n) :");
-//        if (reader.readLine().equals("s")) {
-        	new InputVisualizer().view(twoD.Constants.generatedDataOutputFile);
-//        }
-        System.out.println("Generando clasificador fuerte...");
-        HardClassifier hf = new HardClassifier(new DataInput(twoD.Constants.generatedDataOutputFile));
-        System.out.println("Clasificador fuerte generado. Desea clasificar"
-        		+ " todos los posibles valores? (s/n) : ");
-//        if (reader.readLine().equals("s")) {
-        	hf.classify(new DataInput());
-        	new OutputVisualizer().view(twoD.Constants.classifiedDataFile);
-//        }
+    	
+    	DataInput X = new DataInput(0, 20);
+    	HardClassifier classifier = new HardClassifier(X);
+    	MNISTPredictor predictor = new MNISTPredictor(classifier);
+    	predictor.testImage(4, 10);
     }
     
 }
