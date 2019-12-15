@@ -75,11 +75,12 @@ public class DataInput {
 		}
 	}
 	
-	void allocateMem(int percentage) {
+	void allocateMem(int lowPercentage, int highPercentage) {
 		for (int i = 0; i <= 9; i++) {
-			double coefficient = percentage / (double) 100;
 			double image_n = ml.getImageDatabaseForDigit(i).size();
-			m += coefficient * image_n;
+			double lowIndex = lowPercentage * image_n / (double) 100; 
+			double highIndex = highPercentage * image_n / (double) 100; 
+			m += (highIndex - lowIndex);
 		}
 		data = new int[m][n];
 		classification = new boolean[m];
@@ -90,17 +91,19 @@ public class DataInput {
 	 * Lee de la base de datos el dígito y genera una entrada con sus valores
 	 * ya clasificados
 	 * @param digit del al 9
-	 * @param percentage entre 0 y 100
+	 * @param lowPercentage entre 0 y 100
+	 * @param highPercentage entre 0 y 100. Low estrictamente menor que high
 	 */
-	public DataInput(int digit, int percentage) {
+	public DataInput(int digit, int lowPercentage, int highPercentage) {
 		n = 784;
-		ml.loadDBFromPath("./mnist_1000");
-		allocateMem(percentage);
+		allocateMem(lowPercentage, highPercentage);
         int l = 0; //the index of the picture in the data[] array
         for (int i = 0; i <= 9; i++) {
         	ArrayList<Imagen> digitImages = ml.getImageDatabaseForDigit(i);
-        	int exampleCap = (int) (digitImages.size() * (percentage / (double) 100));
-        	for (int j = 0; j < exampleCap; j++) {
+        	double image_n = digitImages.size();
+        	double lowIndex = lowPercentage * image_n / (double) 100; 
+			double highIndex = highPercentage * image_n / (double) 100; 
+        	for (int j = (int) lowIndex; j < (int) highIndex - 1; j++) {
         		byte imageDataBytes[] = digitImages.get(j).getImageData();
         		for (int k = 0; k < imageDataBytes.length; k++)
         			data[l][k] = Byte2Unsigned(imageDataBytes[k]);
@@ -108,6 +111,21 @@ public class DataInput {
         		l++;
         	}
         }
+	}
+	
+	/**
+	 * Crea una entrada del dígito (0-9) digit con un ejemplo de índice index (0 - 100 approx)
+	 * @param digit
+	 * @param index
+	 */
+	public DataInput(int digit, int index) {
+		n = 784;
+		m = 1;
+		data = new int[m][n];
+		ArrayList<Imagen> digitImages = ml.getImageDatabaseForDigit(digit);
+		byte imageDataBytes[] = digitImages.get(index).getImageData();
+		for (int k = 0; k < imageDataBytes.length; k++)
+			data[0][k] = Byte2Unsigned(imageDataBytes[k]);
 	}
 
 	public int getM() {

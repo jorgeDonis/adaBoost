@@ -21,7 +21,7 @@ public abstract class LightClassifier {
 				compareWith = 1;
 			else
 				compareWith = -1;
-			if (predictions[i] * compareWith < 0)
+			if (predictions[i] * compareWith <= 0)
 				epsilon += D[i];
 		}
 		return epsilon;

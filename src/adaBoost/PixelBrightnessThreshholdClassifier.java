@@ -19,6 +19,13 @@ public class PixelBrightnessThreshholdClassifier extends LightClassifier {
 		threshold = rng.nextInt(256);
 		mustBeHigher = rng.nextBoolean();
 	}
+	
+	public PixelBrightnessThreshholdClassifier(int pix, int thresh, boolean higher) {
+		super();
+		this.pixelPos = pix;
+		this.threshold = thresh;
+		this.mustBeHigher = higher;
+	}
 
 	public PixelBrightnessThreshholdClassifier() {
 		super();
@@ -50,7 +57,7 @@ public class PixelBrightnessThreshholdClassifier extends LightClassifier {
 		for (int i = 0; i < predictions.length; i++) {
 			predictions[i] = threshold - X.getData()[i][pixelPos];
 			if (mustBeHigher)
-				predictions[i] *= 1;
+				predictions[i] *= -1;
 		}
 		return predictions;
 	}

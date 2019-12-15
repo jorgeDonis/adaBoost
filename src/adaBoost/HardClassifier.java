@@ -9,10 +9,10 @@ import twoD.Constants;
 public class HardClassifier {
 
 	// número de clasificadores débiles
-	public static final int T = 10;
+	public static int T = 13;
 
 	// iteraciones de aprendizaje para cada clasificador débil
-	public static final int A = 1000;
+	public static int A = 100;
 
 	// vector de pesos de cada dato
 	private double[] D;
@@ -62,7 +62,8 @@ public class HardClassifier {
 			lc.train(X, D, A);
 			lightClassifiers[t] = lc;
 			double epsilon = lc.getError(X, D);
-			double alpha = 0.5 * Math.log((double)(1 - epsilon) / epsilon);
+			double alpha;
+			alpha = 0.5 * Math.log((double)(1 - epsilon) / epsilon);
 			alphas[t] = alpha;
 			updateD(alpha, lc.predict(X), X);
 		}
