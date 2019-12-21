@@ -55,7 +55,7 @@ public class Imagen {
         }
     }
     
-    byte [] getImageData(){
+    public byte [] getImageData(){
         return imageData;
     }
     

@@ -1,15 +1,14 @@
 package adaBoost;
 
-import java.util.Random;
 import twoD.Constants;
 
-
-
 public class twoDLightClassifier extends LightClassifier {
+
+	private static final long serialVersionUID = 1L;
 	private int threshhold;
 	private boolean vertical;
 	private boolean isClassBigger;
-	
+
 	public void init() {
 		if (vertical = rng.nextBoolean())
 			threshhold = rng.nextInt(Constants.height);
@@ -26,8 +25,8 @@ public class twoDLightClassifier extends LightClassifier {
 	// devuelve una lista de fiabilidad de pertenencia respecto de una lista de
 	// datos
 	@Override
-	public double[] predict(DataInput X) {
-		double[] predictions = new double[X.getM()];
+	public int[] predict(DataInput X) {
+		int[] predictions = new int[X.getM()];
 		for (int i = 0; i < predictions.length; i++) {
 			int x = X.getData()[i][0];
 			int y = X.getData()[i][1];
@@ -36,8 +35,7 @@ public class twoDLightClassifier extends LightClassifier {
 					predictions[i] = x - threshhold;
 				else
 					predictions[i] = threshhold - x;
-			}
-			else {
+			} else {
 				if (isClassBigger)
 					predictions[i] = y - threshhold;
 				else
@@ -46,7 +44,7 @@ public class twoDLightClassifier extends LightClassifier {
 		}
 		return predictions;
 	}
-	
+
 	private void assignParametres(twoDLightClassifier lc) {
 		this.threshhold = lc.threshhold;
 		this.vertical = lc.vertical;
@@ -67,7 +65,7 @@ public class twoDLightClassifier extends LightClassifier {
 		}
 		assignParametres(bestLightClassifier);
 	}
-	
+
 	public twoDLightClassifier(twoDLightClassifier twoD) {
 		super();
 		assignParametres(twoD);
