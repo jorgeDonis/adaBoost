@@ -1,18 +1,25 @@
 package adaBoost;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.Serializable;
 
-import twoD.Constants;
-
-public class HardClassifier {
-
+/**
+ * Dada una imagen, puede predecir se pertenece a una clase o no. Según los
+ * datos de entrenamiento clasificará un número u otro. Se puede entrenar para
+ * clasificar 0's, 1's...
+ * 
+ * @author jorge
+ */
+@SuppressWarnings("serial")
+public class HardClassifier implements Serializable {
 	// número de clasificadores débiles
-	public static int T = 13;
+	public static int T = 150;
 
 	// iteraciones de aprendizaje para cada clasificador débil
-	public static int A = 100;
+	public static int A = 550;
+
+	public HardClassifier() {
+
+	}
 
 	// vector de pesos de cada dato
 	private double[] D;
@@ -28,7 +35,7 @@ public class HardClassifier {
 		return (double) (Math.log(x) / Math.log(2));
 	}
 
-	private void updateD(double alpha, double[] predictions, DataInput X) {
+	private void updateD(double alpha, int[] predictions, DataInput X) {
 		double sigma = 0;
 		for (int i = 0; i < D.length; i++) {
 			double coeff;
@@ -54,6 +61,12 @@ public class HardClassifier {
 	// lista de 'alfas' asociadas a cada clasificador débil
 	public double[] alphas = new double[T];
 
+	/**
+	 * Crea el clasificador fuerte según el algoritmo adaboost para clasificar
+	 * correctamente el conjunto de entrenamiento
+	 * 
+	 * @param X Conjunto de entrenamiento
+	 */
 	public HardClassifier(DataInput X) {
 		initD(X.getM());
 		lightClassifiers = new LightClassifier[T];
@@ -63,21 +76,27 @@ public class HardClassifier {
 			lightClassifiers[t] = lc;
 			double epsilon = lc.getError(X, D);
 			double alpha;
-			alpha = 0.5 * Math.log((double)(1 - epsilon) / epsilon);
+			alpha = (double) 0.5 * (double) Math.log((double) (double) (1 - epsilon) / (double) epsilon);
 			alphas[t] = alpha;
 			updateD(alpha, lc.predict(X), X);
 		}
 	}
-	
+
+	/**
+	 * Dado la entrada, el clasificado calcula su hipótesis
+	 * 
+	 * @param X Conjunto de datos de prueba
+	 * @return Vector de double con el sumatorio de las predicciones de los clasificadores
+	 * débiles multiplicados por sus respectivas alphas (grados de confianza)
+	 */
 	public double[] predict(DataInput X) {
 		double[] hardPredictions = new double[X.getM()];
 		for (int t = 0; t < HardClassifier.T; t++) {
 			LightClassifier lc = lightClassifiers[t];
-			double[] lightPredictions = lc.predict(X);
+			int[] lightPredictions = lc.predict(X);
 			for (int i = 0; i < X.getM(); i++)
-				hardPredictions[i] = hardPredictions[i] + (lightPredictions[i] * alphas[t]);
+				hardPredictions[i] = (hardPredictions[i] + (lightPredictions[i] * alphas[t]));
 		}
 		return hardPredictions;
 	}
-
 }

@@ -1,10 +1,7 @@
 package twoD;
 
-import java.awt.Frame;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -34,6 +31,7 @@ public class InputVisualizer extends Visualizer {
 			}
 			i++;
 		}
+		br.close();
 	}
 
 	public void view(String filename) throws IOException {

@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -39,6 +38,8 @@ public class Visualizer {
 	}
 
 	protected  class ColorPan extends JComponent {
+		private static final long serialVersionUID = 1L;
+
 			public void paint(Graphics g) {
 				BufferedImage image = new BufferedImage(Constants.width, Constants.height, BufferedImage.TYPE_INT_RGB);
 				image.setRGB(0, 0, Constants.width, Constants.height, data, 0, Constants.width);

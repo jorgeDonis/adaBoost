@@ -34,6 +34,7 @@ public class OutputVisualizer extends Visualizer {
 			}
 			i++;
 		}
+		br.close();
 	}
 
 	public void view(String filename) throws IOException {

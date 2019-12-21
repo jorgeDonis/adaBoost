@@ -1,41 +1,50 @@
 package adaBoost;
 
-public class PixelBrightnessThreshholdClassifier extends LightClassifier {
-	
-	/*
-	 * From 0 to 783, pixel to focus on 
+import java.io.Serializable;
+
+/**
+ * Implementación de LightClassifier para el caso de las imagenes MNIST.
+ * Se fija en un píxel de la imagen y según su nivel de brillo, determina 
+ * si pertenece a la clase o no.
+ * @author jorge
+ *
+ */
+@SuppressWarnings("serial")
+public class PixelBrightnessThreshholdClassifier extends LightClassifier implements Serializable {
+	/**
+	 * Píxel de la imagen que cabe analizar
 	 */
 	int pixelPos;
-	
+
 	/**
-	 * Brightness has to be higher or lower than this
+	 * El brillo tiene que ser mayor o menor que este dato
 	 */
 	int threshold;
-	
+	/**
+	 * Indica si el brillo del píxel tiene que ser mayor o menor
+	 * para pertenecer a la clase
+	 */
 	boolean mustBeHigher;
-	
+
+	/**
+	 * Inicializa los valores del clasificador de manera
+	 * aleatoria
+	 */
 	private void init() {
 		pixelPos = rng.nextInt(784);
 		threshold = rng.nextInt(256);
 		mustBeHigher = rng.nextBoolean();
 	}
-	
-	public PixelBrightnessThreshholdClassifier(int pix, int thresh, boolean higher) {
-		super();
-		this.pixelPos = pix;
-		this.threshold = thresh;
-		this.mustBeHigher = higher;
-	}
 
 	public PixelBrightnessThreshholdClassifier() {
 		super();
 	}
-	
+
 	public PixelBrightnessThreshholdClassifier(PixelBrightnessThreshholdClassifier pix) {
 		super();
 		assignParametres(pix);
 	}
-	
+
 	@Override
 	public void train(DataInput X, double[] D, int A) {
 		double minEpsilon = Double.POSITIVE_INFINITY;
@@ -51,17 +60,32 @@ public class PixelBrightnessThreshholdClassifier extends LightClassifier {
 		assignParametres(bestLightClassifier);
 	}
 
+	/**
+	 * Discretiza el valor dentro del conjunto {-1, 1} para que adaboost ajuste
+	 * alpha acordemente
+	 * 
+	 * @param x valor entero
+	 * @return -1 si x es menor estricto que 0, 1 de lo contrario
+	 */
+	private int discretizar(int x) {
+		if (x < 0)
+			return -1;
+		else
+			return 1;
+	}
+
 	@Override
-	public double[] predict(DataInput X) {
-		double[] predictions = new double[X.getM()];
+	public int[] predict(DataInput X) {
+		int[] predictions = new int[X.getM()];
 		for (int i = 0; i < predictions.length; i++) {
-			predictions[i] = threshold - X.getData()[i][pixelPos];
+			int absolutePrediction = threshold - X.getData()[i][pixelPos];
 			if (mustBeHigher)
-				predictions[i] *= -1;
+				absolutePrediction *= -1;
+			predictions[i] = discretizar(absolutePrediction);
 		}
 		return predictions;
 	}
-	
+
 	private void assignParametres(PixelBrightnessThreshholdClassifier pix) {
 		this.threshold = pix.threshold;
 		this.mustBeHigher = pix.mustBeHigher;

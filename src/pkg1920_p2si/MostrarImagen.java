@@ -15,7 +15,8 @@ import javax.swing.*;
   
 public class MostrarImagen extends JPanel
 {
-    Image image;
+	private static final long serialVersionUID = -6238957923407133995L;
+	Image image;
   
     @Override
     protected void paintComponent(Graphics g)

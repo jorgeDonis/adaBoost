@@ -14,9 +14,11 @@ import java.util.ArrayList;
  */
 public class MNISTLoader {
 
-    private ArrayList[] mnistImageDB;
+    @SuppressWarnings("rawtypes")
+	private ArrayList[] mnistImageDB;
     
-    public void loadDBFromPath(String path){
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public void loadDBFromPath(String path){
         
         int imagesCount=0;
         
@@ -41,7 +43,8 @@ public class MNISTLoader {
         
     }
     
-    public ArrayList getImageDatabaseForDigit(int digit){
+    @SuppressWarnings("rawtypes")
+	public ArrayList getImageDatabaseForDigit(int digit){
         return mnistImageDB[digit];
     }
     
