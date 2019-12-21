@@ -174,6 +174,21 @@ public class DataInput {
 		this.data = new int[m][n];
 		this.data[0] = data;
 	}
+	
+	/**
+	 * Constructor para cargar una imagen de la ruta
+	 * @param filename Ruta a la imágen
+	 * @param fordigits parámetro para no entrar en conflicto con el constructor 2D
+	 * 					no hace nada
+	 */
+	public DataInput(String filename, boolean fordigits) {
+		n = 784;
+		m = 1;
+		this.data = new int[m][n];
+		byte imageDataBytes[] = new Imagen(new File(filename)).getImageData();
+		for (int k = 0; k < imageDataBytes.length; k++)
+			data[0][k] = Byte2Unsigned(imageDataBytes[k]);
+	}
 
 	public int getM() {
 		return m;

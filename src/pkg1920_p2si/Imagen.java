@@ -27,7 +27,7 @@ public class Imagen {
     }
     
     
-    Imagen(File file){
+    public Imagen(File file){
         try {
             biImage = ImageIO.read(file);
             imageData = ((DataBufferByte)biImage.getRaster().getDataBuffer()).getData();

@@ -107,29 +107,6 @@ public class MNISTPredictor implements Serializable {
 	}
 
 	/**
-	 * 
-	 * @param filename ruta de la imagen
-	 * @return El número de imagen necesario para cargar a la base de datos MNIST
-	 */
-	int getDigitIndex(String filename) {
-		File[] allImages = new File(filename).getParentFile().listFiles();
-		Arrays.parallelSort(allImages);
-		return (Arrays.asList(allImages).indexOf(new File(filename)));
-	}
-
-	/**
-	 * Devuelve un DataInput de un sólo elemento (m = 1) con la imagen de la ruta
-	 * 
-	 * @param filename ruta ("./mnist/d1/23.png")
-	 * @return DataInput
-	 */
-	private DataInput readDigitFromFile(String filename) {
-		int pos = filename.indexOf("mnist_1000/d") + 12;
-		int digit = Character.getNumericValue(filename.charAt(pos));
-		return new DataInput(digit, getDigitIndex(filename));
-	}
-
-	/**
 	 * Función sigmoidea
 	 * 
 	 * @param x
@@ -148,7 +125,7 @@ public class MNISTPredictor implements Serializable {
 	 *         trata la imagen y con qué grado de confianza (sigmoidea)
 	 */
 	public String testImage(String filename) {
-		DataInput X = readDigitFromFile(filename);
+		DataInput X = new DataInput(filename, true);
 		float certainty = 0;
 		int digit = 0;
 		for (int i = 0; i <= 9; i++) {
@@ -158,7 +135,7 @@ public class MNISTPredictor implements Serializable {
 				digit = i;
 			}
 		}
-		return "Creo que es un " + digit + " con un " + sigmoid(certainty) + "% " + "de confianza";
+		return "Creo que es un " + digit + " con un " + sigmoid(certainty) * 100 + "% " + "de confianza";
 	}
 
 	/**

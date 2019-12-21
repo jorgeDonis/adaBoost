@@ -9,7 +9,7 @@ import mnist_predict.MNISTPredictor;
  */
 public class Main {
 	
-	static int TrainingPercentage = 30;
+	static int TrainingPercentage = 1;
 
 	/**
 	 * @param args the command line arguments
@@ -17,9 +17,10 @@ public class Main {
 	 */
 	public static void main(String[] args) throws IOException {
 		DataInput.ml.loadDBFromPath("./mnist_1000");
-		MNISTPredictor predictor = new MNISTPredictor(TrainingPercentage);
-		predictor.saveToFile("adaboost.brain");
-		System.out.println("Confianza = " + predictor.getConfidence(TrainingPercentage));
+		MNISTPredictor predictor = new MNISTPredictor("adaboost_89.brain");
+//		predictor.saveToFile("adaboost.brain");
+		System.out.println("Confianza = " + predictor.getConfidence(TrainingPercentage) * 100 + "%");
+//		System.out.println(predictor.testImage("/home/jorge/eclipse-workspace/adaBoostEntregar/mnist_1000/d9/12029.png"));
 	}
 
 }
