@@ -57,7 +57,7 @@ public class Predictor2D {
 		boolean[] agree = new boolean[X.getM()];
 		for (int i = 0; i < X.getM(); i++)
 			agree[i] = true;
-		for (int t = 0; t < HardClassifier.T; t++) {
+		for (int t = 0; t < 100; t++) {
 			LightClassifier lc = hc.lightClassifiers[t];
 			int[] lightPredictions = lc.predict(X);
 			for (int i = 0; i < X.getM(); i++)

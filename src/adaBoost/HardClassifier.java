@@ -12,10 +12,10 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class HardClassifier implements Serializable {
 	// número de clasificadores débiles
-	public static int T = 150;
+	public int T = 200;
 
 	// iteraciones de aprendizaje para cada clasificador débil
-	public static int A = 550;
+	public static int A = 800;
 
 	public HardClassifier() {
 
@@ -67,7 +67,7 @@ public class HardClassifier implements Serializable {
 	 * 
 	 * @param X Conjunto de entrenamiento
 	 */
-	public HardClassifier(DataInput X) {
+	public HardClassifier(DataInput X, int T) {
 		initD(X.getM());
 		lightClassifiers = new LightClassifier[T];
 		for (int t = 0; t < T; t++) {
@@ -91,7 +91,7 @@ public class HardClassifier implements Serializable {
 	 */
 	public double[] predict(DataInput X) {
 		double[] hardPredictions = new double[X.getM()];
-		for (int t = 0; t < HardClassifier.T; t++) {
+		for (int t = 0; t < T; t++) {
 			LightClassifier lc = lightClassifiers[t];
 			int[] lightPredictions = lc.predict(X);
 			for (int i = 0; i < X.getM(); i++)

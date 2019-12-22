@@ -1,7 +1,5 @@
 package mnist_predict;
 
-import java.io.File;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -9,7 +7,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Arrays;
 
 import adaBoost.DataInput;
 import adaBoost.HardClassifier;
@@ -23,8 +20,8 @@ import adaBoost.HardClassifier;
 @SuppressWarnings("serial")
 public class MNISTPredictor implements Serializable {
 	/**
-	 * Número de clasificadores fuertes a generar. Elevar este parámetro
-	 * es equivalente a elevar la A o la T de HardClassifer
+	 * Número de clasificadores fuertes a generar. Elevar este parámetro es
+	 * equivalente a elevar la A o la T de HardClassifer
 	 */
 	public static int ITERACIONES_REFUERZO = 1;
 	public MNISTSingleDigitPredictor[] predictors;
@@ -42,15 +39,16 @@ public class MNISTPredictor implements Serializable {
 	 * @param percentage Porcentaje de entrenamiento con el que generar los
 	 *                   clasificadores fuertes
 	 */
-	public MNISTPredictor(int percentage) {
+	public MNISTPredictor(int percentage, int T) {
 		predictors = new MNISTSingleDigitPredictor[10];
 		for (int i = 0; i <= 9; i++) {
 			DataInput X = new DataInput(i, 0, percentage, true);
 			HardClassifier bestHardClassifier = new HardClassifier();
 			float bestAccuracy = Float.NEGATIVE_INFINITY;
 			for (int j = 0; j < MNISTPredictor.ITERACIONES_REFUERZO; j++) {
-				HardClassifier thisHardClassifier = new HardClassifier(X);
+				HardClassifier thisHardClassifier = new HardClassifier(X, T);
 				float thisAccuracy = new MNISTSingleDigitPredictor(thisHardClassifier).classify(X);
+				System.out.print("para el dígito " + i + "!\n");
 				if (thisAccuracy > bestAccuracy) {
 					bestAccuracy = thisAccuracy;
 					bestHardClassifier = thisHardClassifier;
@@ -58,14 +56,19 @@ public class MNISTPredictor implements Serializable {
 			}
 			predictors[i] = new MNISTSingleDigitPredictor(bestHardClassifier);
 		}
+		System.out.println(getConfidence(0, percentage) * 100 + "% de acierto en general sobre el conjunto de "
+				+ "entrenamiento!");
+		System.out.println(
+				getConfidence(percentage, 100) * 100 + "% de acierto en general sobre " + "el conjunto de test!");
 	}
 
 	/**
 	 * Lee del fichero binario todos los predictores (clasificadores fuertes)
 	 * 
 	 * @param filename Ruta al fichero binario
+	 * @throws FileNotFoundException Si no existe el fichero
 	 */
-	public MNISTPredictor(String filename) {
+	public MNISTPredictor(String filename) throws FileNotFoundException {
 		FileInputStream fis;
 		predictors = new MNISTSingleDigitPredictor[10];
 		try {
@@ -75,7 +78,7 @@ public class MNISTPredictor implements Serializable {
 				predictors[i] = (MNISTSingleDigitPredictor) ois.readObject();
 			ois.close();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			throw new FileNotFoundException();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -160,15 +163,15 @@ public class MNISTPredictor implements Serializable {
 	/**
 	 * Calcula el porcentaje (de 0 a 100) de aciertos
 	 * 
-	 * @param percentage Porcentaje desde el cual empezar a tomar ejemplos de
-	 *                   comprobación (se tomarán desde el x% hasta el 100%)
+	 * @param loPercentage límite bajo en porcentaje
+	 * @param hiPercentage límite alto en porcentaje
 	 * @return float entre 0 y 1.
 	 */
-	public float getConfidence(int percentage) {
+	public float getConfidence(int loPercentage, int hiPercentage) {
 		int total_images = 0;
 		int right_guesses = 0;
 		for (int i = 0; i <= 9; i++) {
-			DataInput X = new DataInput(i, percentage, 100, false);
+			DataInput X = new DataInput(i, loPercentage, hiPercentage, false);
 			total_images += X.getM();
 			for (int j = 0; j < X.getM(); j++) {
 				int guessedDigit = guessDigit(new DataInput(X.getData()[j]));

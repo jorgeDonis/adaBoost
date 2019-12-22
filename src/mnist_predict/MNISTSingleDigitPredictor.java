@@ -39,7 +39,7 @@ public class MNISTSingleDigitPredictor implements Serializable {
 			}
 		}
 		float precision = (float) ((double) correctGuess / (double) X.getM()) * 100;
-		System.out.println(precision + "% precisión sobre el conjunto de entrenamiento!");
+		System.out.print(precision + "% precisión sobre el conjunto de entrenamiento ");
 		return precision;
 	}
 
