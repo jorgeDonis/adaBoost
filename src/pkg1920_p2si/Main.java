@@ -1,7 +1,12 @@
 package pkg1920_p2si;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import adaBoost.DataInput;
 import adaBoost.HardClassifier;
 import mnist_predict.MNISTPredictor;
@@ -11,58 +16,28 @@ import mnist_predict.MNISTPredictor;
  */
 public class Main {
 
-	static int trainingPercentage = 50
-
-	/**
-	 * @param args the command line arguments
-	 * @throws IOException
-	 */
-
+	static int trainingPercentage = 10;
 	private static boolean trainingMode;
 	private static String brainLocation;
 	private static String testImageLocation;
-	private static int T = 200;
+	private static int T = 3;
 
-	private static void parseArgs(String[] args) {
-		if (args.length != 2) {
-			System.err.println("Error de syntaxis. Ejemplos de uso:\n"
-					+ "Adaboost –t <fichero_almacenamiento_clasificadores_fuertes>\n"
-					+ "Adaboost <fichero_origen_clasificador_fuerte> <ruta_imagen_prueba_externa>\n");
-			System.exit(1);
-		}
-
-		else {
-			if (args[0].equals("-t")) {
-				trainingMode = true;
-				brainLocation = args[1];
-			} else {
-				trainingMode = false;
-				brainLocation = args[0];
-				testImageLocation = args[1];
-			}
-		}
-	}
-
+	
 	public static void main(String[] args) throws IOException {
+		FileWriter fileWriter = new FileWriter("tests/A.test");
+	    PrintWriter printWriter = new PrintWriter(fileWriter);	
 		MNISTPredictor predictor;
-		parseArgs(args);
-		if (trainingMode) {
-			System.out.println("[MODO ENTRENAMIENTO]");
-			System.out.println("Porcentaje de entrenamiento = " + trainingPercentage);
-			System.out.println("Iteraciones de refuerzo = " + MNISTPredictor.ITERACIONES_REFUERZO);
-			System.out.println("A = " + HardClassifier.A);
-			System.out.println("T = " + T);
-			DataInput.ml.loadDBFromPath("./mnist_1000");
+		DataInput.ml.loadDBFromPath("mnist_1000");
+		for (int i = 1; i < 1000; i++) {
+			HardClassifier.A = i;
 			predictor = new MNISTPredictor(trainingPercentage, T);
-			predictor.saveToFile(brainLocation);
-		} else {
-			try {
-				predictor = new MNISTPredictor(brainLocation);
-				System.out.println(predictor.testImage(testImageLocation));
-			} catch (FileNotFoundException e) {
-				System.out.println("No se pudo encontrar el fichero del clasificador!");
-			}
+			float precision = (predictor.getConfidence(trainingPercentage, 100));
+			String precisionstr = String.valueOf(precision);
+			printWriter.println(i + " " + precisionstr);
+			System.out.println(precisionstr);
+			if (precision > 80)
+				break;
 		}
+		printWriter.close();
 	}
-
 }

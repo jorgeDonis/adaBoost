@@ -48,7 +48,6 @@ public class MNISTPredictor implements Serializable {
 			for (int j = 0; j < MNISTPredictor.ITERACIONES_REFUERZO; j++) {
 				HardClassifier thisHardClassifier = new HardClassifier(X, T);
 				float thisAccuracy = new MNISTSingleDigitPredictor(thisHardClassifier).classify(X);
-				System.out.print("para el dígito " + i + "!\n");
 				if (thisAccuracy > bestAccuracy) {
 					bestAccuracy = thisAccuracy;
 					bestHardClassifier = thisHardClassifier;
@@ -56,10 +55,6 @@ public class MNISTPredictor implements Serializable {
 			}
 			predictors[i] = new MNISTSingleDigitPredictor(bestHardClassifier);
 		}
-		System.out.println(getConfidence(0, percentage) * 100 + "% de acierto en general sobre el conjunto de "
-				+ "entrenamiento!");
-		System.out.println(
-				getConfidence(percentage, 100) * 100 + "% de acierto en general sobre " + "el conjunto de test!");
 	}
 
 	/**
