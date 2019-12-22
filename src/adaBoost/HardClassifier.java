@@ -68,6 +68,7 @@ public class HardClassifier implements Serializable {
 	 * @param X Conjunto de entrenamiento
 	 */
 	public HardClassifier(DataInput X, int T) {
+		this.T = T;
 		initD(X.getM());
 		lightClassifiers = new LightClassifier[T];
 		for (int t = 0; t < T; t++) {
