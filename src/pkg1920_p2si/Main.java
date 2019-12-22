@@ -11,7 +11,7 @@ import mnist_predict.MNISTPredictor;
  */
 public class Main {
 
-	static int trainingPercentage = 50;
+	static int trainingPercentage = 30;
 
 	/**
 	 * @param args the command line arguments
@@ -21,7 +21,7 @@ public class Main {
 	private static boolean trainingMode;
 	private static String brainLocation;
 	private static String testImageLocation;
-	private static int T = 200;
+	private static int T = 300;
 
 	private static void parseArgs(String[] args) {
 		if (args.length != 2) {
@@ -44,6 +44,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws IOException {
+		HardClassifier.A = 300;
 		MNISTPredictor predictor;
 		parseArgs(args);
 		if (trainingMode) {

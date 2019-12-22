@@ -59,7 +59,7 @@ public class HardClassifier implements Serializable {
 	public LightClassifier[] lightClassifiers;
 
 	// lista de 'alfas' asociadas a cada clasificador débil
-	public double[] alphas = new double[T];
+	public double[] alphas;
 
 	/**
 	 * Crea el clasificador fuerte según el algoritmo adaboost para clasificar
@@ -69,6 +69,7 @@ public class HardClassifier implements Serializable {
 	 */
 	public HardClassifier(DataInput X, int T) {
 		this.T = T;
+		alphas = new double[T];
 		initD(X.getM());
 		lightClassifiers = new LightClassifier[T];
 		for (int t = 0; t < T; t++) {
