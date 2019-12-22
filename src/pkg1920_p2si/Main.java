@@ -24,14 +24,14 @@ public class Main {
 
 	
 	public static void main(String[] args) throws IOException {
-		FileWriter fileWriter = new FileWriter("tests/tiempos_t.test");
+		FileWriter fileWriter = new FileWriter("tests/tiempos_X.test");
 	    PrintWriter printWriter = new PrintWriter(fileWriter);	
 		MNISTPredictor predictor;
-		HardClassifier.A = 100;
+		HardClassifier.A = 50;
 		DataInput.ml.loadDBFromPath("mnist_1000");
-		for (int i = 1; i < 100; i++) {
+		for (int i = 1; i < 50; i++) {
 			long start = System.nanoTime();
-			predictor = new MNISTPredictor(trainingPercentage, i);
+			predictor = new MNISTPredictor(trainingPercentage, 20);
 			long end = System.nanoTime();
 			long time = end - start;
 			String elapsedtime = String.valueOf(time);
