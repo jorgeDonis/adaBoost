@@ -20,23 +20,22 @@ public class Main {
 	private static boolean trainingMode;
 	private static String brainLocation;
 	private static String testImageLocation;
-	private static int T = 3;
+	private static int T = 50;
 
 	
 	public static void main(String[] args) throws IOException {
-		FileWriter fileWriter = new FileWriter("tests/A.test");
+		FileWriter fileWriter = new FileWriter("tests/tiempos_t.test");
 	    PrintWriter printWriter = new PrintWriter(fileWriter);	
 		MNISTPredictor predictor;
+		HardClassifier.A = 100;
 		DataInput.ml.loadDBFromPath("mnist_1000");
-		for (int i = 1; i < 1000; i++) {
-			HardClassifier.A = i;
-			predictor = new MNISTPredictor(trainingPercentage, T);
-			float precision = (predictor.getConfidence(trainingPercentage, 100));
-			String precisionstr = String.valueOf(precision);
-			printWriter.println(i + " " + precisionstr);
-			System.out.println(precisionstr);
-			if (precision > 80)
-				break;
+		for (int i = 1; i < 100; i++) {
+			long start = System.nanoTime();
+			predictor = new MNISTPredictor(trainingPercentage, i);
+			long end = System.nanoTime();
+			long time = end - start;
+			String elapsedtime = String.valueOf(time);
+			printWriter.println(i + " " + elapsedtime);
 		}
 		printWriter.close();
 	}
