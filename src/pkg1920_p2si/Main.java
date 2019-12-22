@@ -11,7 +11,7 @@ import mnist_predict.MNISTPredictor;
  */
 public class Main {
 
-	static int trainingPercentage = 50;
+	static int trainingPercentage = 80;
 
 	/**
 	 * @param args the command line arguments
@@ -45,6 +45,7 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		MNISTPredictor predictor;
+		HardClassifier.A = 500;
 		parseArgs(args);
 		if (trainingMode) {
 			System.out.println("[MODO ENTRENAMIENTO]");
