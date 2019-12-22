@@ -16,26 +16,24 @@ import mnist_predict.MNISTPredictor;
  */
 public class Main {
 
-	static int trainingPercentage = 10;
+	static int trainingPercentage = 5;
 	private static boolean trainingMode;
 	private static String brainLocation;
 	private static String testImageLocation;
-	private static int T = 50;
+	private static int T = 100;
 
-	
 	public static void main(String[] args) throws IOException {
-		FileWriter fileWriter = new FileWriter("tests/tiempos_X.test");
-	    PrintWriter printWriter = new PrintWriter(fileWriter);	
+		FileWriter fileWriter = new FileWriter("tests/overfit2.test");
+		PrintWriter printWriter = new PrintWriter(fileWriter);
 		MNISTPredictor predictor;
-		HardClassifier.A = 50;
+		HardClassifier.A = 500;
 		DataInput.ml.loadDBFromPath("mnist_1000");
-		for (int i = 1; i < 50; i++) {
-			long start = System.nanoTime();
-			predictor = new MNISTPredictor(trainingPercentage, 20);
-			long end = System.nanoTime();
-			long time = end - start;
-			String elapsedtime = String.valueOf(time);
-			printWriter.println(i + " " + elapsedtime);
+		for (int i = 300; i < 420; i+=50) {
+			predictor = new MNISTPredictor(trainingPercentage, i);
+			float aciertosEntrenamiento = predictor.getConfidence(0, trainingPercentage);
+			float aciertosTest = predictor.getConfidence(trainingPercentage, 100);
+			printWriter.println(i + " " + String.valueOf(aciertosEntrenamiento) + " " 
+			+ String.valueOf(aciertosTest));
 		}
 		printWriter.close();
 	}
