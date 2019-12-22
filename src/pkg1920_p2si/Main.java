@@ -11,7 +11,7 @@ import mnist_predict.MNISTPredictor;
  */
 public class Main {
 
-	static int trainingPercentage = 50;
+	static int trainingPercentage = 50
 
 	/**
 	 * @param args the command line arguments
