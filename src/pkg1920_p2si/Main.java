@@ -16,7 +16,7 @@ import mnist_predict.MNISTPredictor;
  */
 public class Main {
 
-	static int trainingPercentage = 5;
+	static int trainingPercentage = 30;
 	private static boolean trainingMode;
 	private static String brainLocation;
 	private static String testImageLocation;
@@ -26,9 +26,9 @@ public class Main {
 		FileWriter fileWriter = new FileWriter("tests/overfit2.test");
 		PrintWriter printWriter = new PrintWriter(fileWriter);
 		MNISTPredictor predictor;
-		HardClassifier.A = 500;
+		HardClassifier.A = 1000;
 		DataInput.ml.loadDBFromPath("mnist_1000");
-		for (int i = 300; i < 420; i+=50) {
+		for (int i = 1; i < 1000; i+=10) {
 			predictor = new MNISTPredictor(trainingPercentage, i);
 			float aciertosEntrenamiento = predictor.getConfidence(0, trainingPercentage);
 			float aciertosTest = predictor.getConfidence(trainingPercentage, 100);
