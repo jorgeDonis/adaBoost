@@ -16,25 +16,18 @@ import mnist_predict.MNISTPredictor;
  */
 public class Main {
 
-	static int trainingPercentage = 5;
+	static int trainingPercentage = 90;
 	private static boolean trainingMode;
 	private static String brainLocation;
 	private static String testImageLocation;
-	private static int T = 100;
+	private static int T = 800;
 
 	public static void main(String[] args) throws IOException {
-		FileWriter fileWriter = new FileWriter("tests/overfit2.test");
-		PrintWriter printWriter = new PrintWriter(fileWriter);
-		MNISTPredictor predictor;
-		HardClassifier.A = 500;
+		HardClassifier.A = 1000;
 		DataInput.ml.loadDBFromPath("mnist_1000");
-		for (int i = 300; i < 420; i+=50) {
-			predictor = new MNISTPredictor(trainingPercentage, i);
-			float aciertosEntrenamiento = predictor.getConfidence(0, trainingPercentage);
-			float aciertosTest = predictor.getConfidence(trainingPercentage, 100);
-			printWriter.println(i + " " + String.valueOf(aciertosEntrenamiento) + " " 
-			+ String.valueOf(aciertosTest));
-		}
-		printWriter.close();
+		MNISTPredictor predictor = new MNISTPredictor(trainingPercentage, T);
+		System.out.println("Anton was born with " + predictor.getConfidence(trainingPercentage, 100)
+		+ "% success rate!");
+		predictor.saveToFile("sonofanton.brain");
 	}
 }
